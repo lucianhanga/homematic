@@ -1,0 +1,16 @@
+
+string itemID;
+string address;
+object aldp_obj;
+boolean val;
+
+foreach(itemID, dom.GetObject(ID_DEVICES).EnumUsedIDs()) {
+  address = dom.GetObject(itemID).Address();
+  aldp_obj = dom.GetObject("AL-" # address # ":0.UNREACH");
+  if(aldp_obj) {
+    val = aldp_obj.Value();
+    if(val) {
+      WriteLine(aldp_obj # "  " # val);
+    }
+  }
+}

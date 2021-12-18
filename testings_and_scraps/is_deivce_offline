@@ -1,0 +1,39 @@
+string device_to_be_checked = "JEQ0105335";
+boolean device_is_offline = false;
+object aldp_obj;
+aldp_obj = dom.GetObject("AL-" # device_to_be_checked # ":0.UNREACH");
+if(aldp_obj) {
+  WriteLine("Device: " # device_to_be_checked # " detected.");
+  device_is_offline = aldp_obj.Value();
+} else {
+  WriteLine("Device: " # device_to_be_checked # " NOT found.");
+}
+! WriteLine(aldp_obj # "  " # device_is_offline);
+WriteLine("Device: " # device_to_be_checked # " is offline: " # device_is_offline);
+
+
+string MailEmpfaenger   =   "lucianhanga@gmx.net,vcotirlea@yahoo.com";
+string MailBetreff      =   "Device Offline";
+string MailText;
+string TimeStamp = system.Date("%Y-%m-%d %H:%M:%S").ToString();
+MailText                =  "The device is offline\r\n";
+MailText  = MailText    #  TimeStamp # "\r\n";
+
+string stdout;
+string stderr;
+string teilstr;
+
+string sendmail    = "";
+string sendbetreff = "";
+string mailto      = "";
+
+string recipient;
+if(device_is_offline) {
+  foreach(recipient, MailEmpfaenger.Split(",")) {
+    Write("Send email to: " # recipient # " ...");
+    system.Exec ("/bin/sh /etc/config/addons/mh/email.sh " # "\"" # MailBetreff # "\" \"" # MailText # "\" " # recipient, &stdout, &stderr);
+    WriteLine("done.");
+  }
+}
+
+WriteLine("OK");
