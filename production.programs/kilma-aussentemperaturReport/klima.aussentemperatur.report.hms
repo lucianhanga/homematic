@@ -1,0 +1,141 @@
+! 
+! *********************************
+! * 
+! *  Aussentemperatur Speach Programm
+! *  v1.0  release date [ 2018.11.11 22:00 ]
+! *  
+! *  Description:  
+! *  Reads the temperature from the Außentemperatur Sensor and
+! *  plays it on the "Lautsprecher Sound".
+! *  
+! *  Author:
+! *  Lucian Hanga  
+! *  
+! *  Release Notes:
+! *  v1.0 [ 2018.11.11 22:00 ]
+! *  - First Draft of the programm
+! *  
+! *  To Be Done for v1.1:
+! *  - nothing scheduled yet
+! *  
+! *  
+! *********************************
+! 
+
+string aussentemperatur_sensor_name_ = "Außentemperatur Sensor";
+
+WriteLine(aussentemperatur_sensor_name_);
+! get the Device ID from the Channel
+! var aussentemperatur_object_ = dom.GetObject(aussentemperatur_sensor_name_).Device();
+! get the object and get some of the properties
+! WriteLine(dom.GetObject(aussentemperatur_object_ ).HssType());
+! get the temperatur value
+WriteLine(dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value());
+
+if          (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -20.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,180");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -19.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,181");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -18.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,182");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -17.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,183");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -16.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,184");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -15.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,185");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -14.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,186");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -13.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,187");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -12.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,188");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -11.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,189");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -10.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,190");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -9.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,191");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -8.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,192");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -7.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,193");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -6.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,194");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -5.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,195");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -4.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,196");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -3.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,197");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -2.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,198");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < -1.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,199");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 0.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,200");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 1.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,201");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 2.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,202");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 3.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,203");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 4.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,204");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 5.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,205");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 6.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,206");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 7.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,207");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 8.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,208");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 9.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,209");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 10.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,210");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 11.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,211");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 12.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,212");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 13.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,213");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 14.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,214");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 15.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,215");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 16.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,216");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 17.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,217");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 18.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,218");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 19.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,219");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 20.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,220");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 21.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,221");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 22.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,222");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 23.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,223");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 24.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,224");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 25.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,225");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 26.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,226");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 27.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,227");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 28.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,228");
+} else { if (dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value() < 29.0) {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,229");
+} else {
+     dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("0.5,1,108000,175,230");
+} } } } } } } } } } 
+} } } } } } } } } } 
+} } } } } } } } } } 
+} } } } } } } } } } 
+} } } } } } } } } }
