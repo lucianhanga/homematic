@@ -1,0 +1,136 @@
+! *********************************
+! * 
+! *  Klima Control Programm
+! *  v2.0  release date [ 2017.02.10 09:05 ]
+! *  
+! ** Description:  
+! *  Programm for controling the Fussbodenheizung in the 
+! *  House. Even if the programming language lacks the
+! *  support for functions/macros/routines, the 'foreach'
+! *  construction was used to repeat the functionality for
+! *  each room in the house.
+! *  The names given for the devices which control the 
+! *  Fussbodenheizung should follow the below described 
+! *  naming convention.
+! *  - The Switch HM-LC-Sw1-FM should be named:
+! *   "<Roomname> Heizungsschalter" 
+! *     e.g. "Bad OG1 Heizungsschalter"
+! * 
+! *  - The Channel 1 of the switch should be named:  
+! *  "<Roomname> Heizungsschalter Aktor" 
+! *     e.g. "Bad OG1 Heizungsschalter Aktor"
+! * 
+! *  - The Wandthermostat should be named:
+! *  "<Roomname> Klimaregler"
+! *    e.g. "Bad OG1 Klimaregler"
+! *     
+! *  - The Channel 1 of the Thermostat should be named:
+! *  "<Roomname> Klimaregler Sensor"
+! *    e.g. "Bad OG1 Klimaregler Sensor"
+! *  
+! *  - The Channel 2 of the Thermostat should be named:
+! *  "<Roomname> Klimaregler Sender"
+! *    e.g. "Bad OG1 Klimaregler Sender"
+! *  
+! *  - The Channel 3 of the Thermostat should be named:
+! *  "<Roomname> Klimaregler Receiver"
+! *    e.g. "Bad OG1 Klimaregler Receiver"
+! *  
+! **  Author:
+! *  Lucian Hanga  
+! *  
+! ** Release Notes:
+! *  v2.0 [ 2017.02.10 09:05 ]
+! *  - reduce the code size and redundancies using the 
+! *  foreach loop.
+! *  - optimize the code by reducing the enquires to the dom
+! *  tree. This will reduce significantly the time required by
+! *  the script to run.
+! * 
+! *  v1.0 [ 2014.04.04 15:30 ]
+! *  - First Draft of the programm
+! *  
+! ** To Be Done for v2.1:
+! *  - Finalize the gong .mp3s for notifications in case
+! *    of devices failure.
+! *  
+! *  
+! * Homematic LH Scripts Collection
+! * Copyright (C) 2014  Lucian Hanga
+! * 
+! * This library is free software; you can redistribute it and/or
+! * modify it under the terms of the GNU Lesser General Public
+! * License as published by the Free Software Foundation; either
+! * version 2.1 of the License, or (at your option) any later version.
+! * 
+! * This library is distributed in the hope that it will be useful,
+! * but WITHOUT ANY WARRANTY; without even the implied warranty of
+! * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+! * Lesser General Public License for more details.
+! * 
+! * You should have received a copy of the GNU Lesser General Public
+! * License along with this library; if not, write to the Free Software
+! * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+! * 
+! *********************************
+
+
+string rooms_ = "";
+rooms_ = rooms_ # "Gäste WC"         #"\t";
+rooms_ = rooms_ # "Küche"            #"\t";
+rooms_ = rooms_ # "Wohnzimmer"       #"\t";
+rooms_ = rooms_ # "Schlafzimmer"     #"\t";
+rooms_ = rooms_ # "Bad Schlafzimmer" #"\t";
+rooms_ = rooms_ # "Bad OG1"          #"\t";
+rooms_ = rooms_ # "Kinderzimmer"     #"\t";
+rooms_ = rooms_ # "Gästezimmer"      #"\t";
+rooms_ = rooms_ # "Wohnzimmer OG2"   #"\t";
+rooms_ = rooms_ # "Schlafzimmer OG2" #"\t";
+rooms_ = rooms_ # "Bad OG2"               ;
+
+real  threshold_start_ = 0.1;
+real  threshold_stop_  = 0.2;
+
+string room_name_;
+foreach(room_name_, rooms_.Split("\t")) {
+	!WriteLine("[INFO]   room: " # room_name_);
+	object klima_sensor_ = null;
+	object klima_sender_ = null;
+	object klima_heizungschalter_ = null;
+	klima_sensor_ = dom.GetObject(room_name_ # " Klimaregler Sensor");
+	klima_sender_ = dom.GetObject(room_name_ # " Klimaregler Sender");
+	klima_heizungschalter_ = dom.GetObject(room_name_ # " Heizungsschalter Aktor");
+	!WriteLine("[INFO]   room: " # room_name_ # ";  klima: " # klima_sensor_ # ";   heizungschalter: " # klima_heizungschalter_);
+	if((!klima_sender_) || (!klima_sensor_) || (!klima_heizungschalter_)) {
+	   WriteLine("[ERROR]    room: \"" # room_name_ # "\"" # " error getting the klima status&control devices.");
+	} else {
+		real temperature_current_ = klima_sensor_.DPByHssDP("TEMPERATURE").Value();
+		real temperature_set_     = klima_sender_.DPByHssDP("SETPOINT").Value();
+		real temperature_min_     = temperature_set_ - threshold_start_;
+    real temperature_max_     = temperature_set_ + threshold_stop_;
+		WriteLine("[INFO]     room: \"" # room_name_ # "\"" # " temperature: "  # temperature_current_ # ";  set: " # temperature_set_ # ";  min: " # temperature_min_ # ";  max: " # temperature_max_);
+		if(temperature_current_ < temperature_min_) {
+		   ! the temperature is lower than the than the requested temperature
+		   if(klima_heizungschalter_.DPByHssDP("STATE").Value() == false) {
+		      WriteLine("[INFO]    " # room_name_ # " turn ON the heat.");
+		      klima_heizungschalter_.DPByHssDP("STATE").State(true);
+ 		   } else {
+		      WriteLine("[INFO]    " # room_name_ # " already ON."); 		   
+ 		   }
+    } else {
+      if(temperature_current_ >= temperature_max_) {
+         ! the temperature is bigger then the requested temperature
+		   if(klima_heizungschalter_.DPByHssDP("STATE").Value() == true) {
+		      WriteLine("[INFO]    " # room_name_ # " turn OFF the heat.");
+		      klima_heizungschalter_.DPByHssDP("STATE").State(false);
+ 		   } else {
+		      WriteLine("[INFO]    " # room_name_ # " already OFF."); 		   
+ 		   } 
+      } else {
+		      WriteLine("[INFO]    " # room_name_ # " heat is fine. keep it."); 		   
+      }
+    }
+	}
+}
+WriteLine("ok");
+
