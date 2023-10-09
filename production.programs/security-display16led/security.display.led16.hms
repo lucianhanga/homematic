@@ -1,0 +1,121 @@
+! *********************************
+! * 
+! *  Dispaly16LED -  Open Windows Programm
+! *  v1.0  release date [ 2023.10.09 20:00 ]
+! *  
+! ** Description:  
+! *
+! * The programm is configured with all the door sensors 
+! * and the corresponding led number in the 16led display.
+! * At regular intervals, currently 5 seconds, the
+! * CCUx calls the programm. The programm iterates over
+! * the door sensors and checks the state of the sensor.
+! * The associated led is set to the corresponding color.
+! * Open Door -> Red Led
+! * Closed Door -> Green Led
+! * Tilted Door -> Yellow Led
+! *  
+! **  Author:
+! *  Lucian Hanga  
+! *  
+! ** Release Notes:
+! *  v1.0 [ 2020.10.09 20:00 ]
+! *  - First Draft of the programm
+! *  
+! * 
+! *********************************
+
+string displayName = "Led16Display";
+
+string doorSensors  = "";
+doorSensors = doorSensors   # "Gäste WC Fenster"            #"#"#     "2"  #"\t";
+doorSensors = doorSensors   # "Küche Fenster"               #"#"#     "3"  #"\t";
+doorSensors = doorSensors   # "Wohnzimmer Fenster 1"        #"#"#     "4"  #"\t";
+doorSensors = doorSensors   # "Wohnzimmer Fenster 3"        #"#"#     "5"  #"\t";
+doorSensors = doorSensors   # "Schlafzimmer Fenster"        #"#"#     "6"  #"\t";
+doorSensors = doorSensors   # "Bad Schlafzimmer Fenster"    #"#"#     "7"  #"\t";
+doorSensors = doorSensors   # "Bad OG1 Fenster"             #"#"#     "8"  #"\t";
+doorSensors = doorSensors   # "Kinderzimmer Fenster"        #"#"#     "9"  #"\t";
+doorSensors = doorSensors   # "Gästezimmer Fenster"         #"#"#     "10" #"\t";
+doorSensors = doorSensors   # "Wohnzimmer OG2 Fenster 1"    #"#"#     "11" #"\t";
+doorSensors = doorSensors   # "Wohnzimmer OG2 Fenster 3"    #"#"#     "12" #"\t";
+doorSensors = doorSensors   # "Schlafzimmer OG2 Fenster 1"  #"#"#     "13" #"\t";
+! WriteLine("debug: " # doorSensors);
+integer RED=1;
+integer GREEN=2;
+integer YELLOW=3;
+integer CLOSED=0;
+integer OPEN=2;
+integer TILTED=1;
+
+! get the device
+object device = dom.GetObject(displayName);
+if (!device) {
+    WriteLine("ERROR: Device '" # displayName # "' NOT found");
+    return;
+}
+! WriteLine("Info:  Device: " # displayName);
+
+! check if the device is a 16led display
+if (device.HssType() != "HM-OU-LED16") {
+    WriteLine("ERROR: Device '" # displayName # "' is NOT a 16led display");
+    return;
+}
+
+
+! iterate over the door sensors
+string doorSensor;
+foreach (doorSensor, doorSensors.Split("\t")) {
+    ! WriteLine("debug: doorSensor: " # doorSensor);
+    ! split the doorSensor into sensor and led number
+    string sensorName = doorSensor.StrValueByIndex("#", 0);
+    string ledNumber = doorSensor.StrValueByIndex("#", 1);
+    WriteLine("Info:  sensorName: " # sensorName # ";         ledNumber: " # ledNumber);
+    ! get the sensor data point
+    object sensor = dom.GetObject(sensorName);
+    if (!sensor) {
+        WriteLine("Warn:  Sensor '" # sensorName # "' NOT found");
+        continue;
+    }
+    ! WriteLine("debug: Sensor: " # sensor);
+    ! create the datapoint name
+    string sensorDatapointName = "HmIP-RF." # sensor.Address() # ":" # 1 # ".STATE";
+    ! WriteLine("debug: sensorDatapointName: " # sensorDatapointName);
+    ! get the datapoint value
+    object sensorDatapoint = dom.GetObject(sensorDatapointName);
+    if (!sensorDatapoint) {
+        WriteLine("Warn:  Sensor datapoint '" # sensorDatapointName # "' NOT found");
+        continue;
+    }
+    ! WriteLine("debug: sensorDatapoint: " # sensorDatapoint);
+    ! get the datapoint value
+    string sensorDatapointValue = sensorDatapoint.Value();
+    ! WriteLine("debug: sensorDatapointValue: " # sensorDatapointValue);
+    ! 0 - closed, 1 - open, 2 - tilted
+
+    ! 0 - closed -> LED: 1 - green
+    ! 1 - open   -> LED: 2 - red
+    ! 2 - tilted -> LED: 3 - yellow
+
+    string ledDataPoint = "BidCos-RF." # device.Address() # ":" # ledNumber # ".LED_STATUS";
+    ! WriteLine("debug: ledDataPoint: " # ledDataPoint);
+    object ledDP = dom.GetObject(ledDataPoint);
+ 
+    if (sensorDatapointValue == CLOSED) {
+        ! WriteLine("Info:  Sensor '" # sensorName # "' is closed");
+        ! set the led to green
+        ledDP.State(GREEN);
+        return;
+    }
+    if (sensorDatapointValue == OPEN) {
+        ! WriteLine("Info:  Sensor '" # sensorName # "' is open");
+        ! set the led to red
+        ledDP.State(RED);
+        return;
+    }
+    if (sensorDatapointValue == TILTED) {
+        ! WriteLine("Info:  Sensor '" # sensorName # "' is tilted");
+        ! set the led to yellow
+        ledDP.State(YELLOW);
+    }
+}

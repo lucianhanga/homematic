@@ -1,0 +1,98 @@
+! homematic device name/address
+string name = "Led16Display";
+
+! get the device
+object device = dom.GetObject(name);
+WriteLine(device);
+
+! check if the device exists
+if (!device) {
+    WriteLine("Device '" # name # "' NOT found");
+    return;
+} else {
+    WriteLine("Device '" # name # "' found");
+};
+
+WriteLine("");
+WriteLine("---------        Device: " # device.Name() # "        ---------");
+WriteLine("device.ID() " # device.ID());
+WriteLine("device.Name() " # device.Name());
+WriteLine("device.Address() " # device.Address());
+WriteLine("device.HssType() " # device.HssType());
+WriteLine("device.Type() " # device.Type());
+WriteLine("device.TypeName() " # device.TypeName());
+WriteLine("device.State() " # device.State());
+WriteLine("device.Interface() " # device.Interface());
+! if is a device, get its channels
+if (device.TypeName() == "DEVICE") {
+    WriteLine("device.Channels() " # device.Channels());
+    WriteLine("device.Channels().Count() " # device.Channels().Count());  
+}
+WriteLine("-------------------------------------------------------");
+WriteLine("");
+
+if (device.TypeName() == "DEVICE") {
+    string chan = "";
+     foreach (chan, device.Channels()) {
+        WriteLine("   ---------        Channel: " # chan # "      --------------");
+        ! get the channel object
+        object channel = dom.GetObject(chan);
+        WriteLine("   channel " # channel);
+        WriteLine("   --- object methods ---");
+        WriteLine("   channel.ID() " # channel.ID());
+        WriteLine("   channel.Name() " # channel.Name());
+        WriteLine("   channel.HssType() " # channel.HssType());
+        WriteLine("   channel.Type() " # channel.Type());
+        WriteLine("   channel.TypeName() " # channel.TypeName());
+        WriteLine("   channel.State() " # channel.State());
+        WriteLine("   --- channel methods ---");
+        WriteLine("   channel.Device() " # channel.Device());
+        WriteLine("   channel.Interface() " # channel.Interface());
+        WriteLine("   channel.Address() " # channel.Address());
+        WriteLine("   channel.ChnGroupPartnerId() " # channel.ChnGroupPartnerId());
+        WriteLine("   channel.ChnDirection() " # channel.ChnDirection());
+        ! the values for dirrection are:
+        ! 0 = none
+        ! 1 = sender
+        ! 2 = receiver
+        WriteLine("   channel.ChnAESActive() " # channel.ChnAESActive());
+        WriteLine("   channel.ChnArchive() " # channel.ChnArchive());
+        WriteLine("   channel.ChnRoom() " # channel.ChnRoom());
+        WriteLine("   channel.ChnFunction() " # channel.ChnFunction());
+        WriteLine("   channel.DPByHssDP() " # channel.DPByHssDP());
+        WriteLine("   channel.DPs() " # channel.DPs());
+        WriteLine("   channel.DPs().Count() " # channel.DPs().Count());
+        ! list all the DPs of the channel
+        string dp = "";
+        foreach (dp, channel.DPs()) {
+            WriteLine("       --- DP: " # dp # " ---");
+            object dpObj = dom.GetObject(dp);
+            WriteLine("       dpObj " # dpObj);
+            WriteLine("       --- object methods ---");
+            WriteLine("       dpObj.ID() " # dpObj.ID());
+            WriteLine("       dpObj.Name() " # dpObj.Name());
+            WriteLine("       dpObj.HssType() " # dpObj.HssType());
+            WriteLine("       dpObj.Type() " # dpObj.Type());
+            WriteLine("       dpObj.TypeName() " # dpObj.TypeName());
+            WriteLine("       dpObj.State() " # dpObj.State());
+            WriteLine("       --- DataPoint methods ---");
+            WriteLine("       dpObj.Device() " # dpObj.ValueType());
+            WriteLine("       dpObj.Channel() " # dpObj.Channel());
+            WriteLine("       dpObj.Value() " # dpObj.Value());
+            WriteLine("       dpObj.LastValue() " # dpObj.LastValue());
+            WriteLine("       dpObj.Operations() " # dpObj.Operations());
+            ! the possible values for operations are a combination of:
+            ! OPERATION_READ = 1
+            ! OPERATION_WRITE = 2
+            ! OPERATION_EVENT = 4
+            ! OPERATION_METHOD = 8
+            ! OPERATION_EVENTMETHOD = 16
+            ! OPERATION_EVENTREAD = 32
+            ! OPERATION_EVENTWRITE = 64
+            ! OPERATION_EVENTREADWRITE = 96
+            WriteLine("       dpObj.Timestamp() " # dpObj.Timestamp());
+            WriteLine("       ---------------------------------------------------");
+            WriteLine("");
+        };
+    };
+};

@@ -1,0 +1,41 @@
+string name = "Led16Display";
+string channelNumer = "1";
+
+! get the device
+object device = dom.GetObject(name);
+if (!device) {
+    WriteLine("Device '" # name # "' NOT found");
+    return;
+}
+WriteLine("Device: " # device);
+
+! check if the device is a 16led display
+if (device.HssType() != "HM-OU-LED16") {
+    WriteLine("Device '" # name # "' is NOT a 16led display");
+    return;
+}
+! get the datapoint
+string dpName = "BidCos-RF." # device.Address() # ":" # channelNumer # ".LED_STATUS";
+object datapoint = dom.GetObject(dpName);
+! check if the datapoint exists
+if (!datapoint) {
+    WriteLine("Datapoint '" # dpName # "' NOT found");
+    return;
+};
+WriteLine("Datapoint: " # datapoint);
+
+! get the value 
+integer value = datapoint.Value();
+WriteLine("Value: " # value);
+
+! set to red - value 1
+! datapoint.State(1);
+! set to green - value 2
+! datapoint.State(2);
+! set to yellow - value 3
+! datapoint.State(3);
+! set to off - value 0
+datapoint.State(0);
+
+! integer t=1; ! for sleep t seconds
+! system.Exec("/bin/sleep " # t,&stdout,&stderr); ! sleep t seconds
