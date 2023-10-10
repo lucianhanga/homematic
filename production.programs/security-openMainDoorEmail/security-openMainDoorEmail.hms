@@ -1,0 +1,24 @@
+string MailEmpfaenger   =   "lucianhanga@gmx.net,vcotirlea@yahoo.com";
+string MailBetreff      =   " Home Main Door Opened";
+string MailText;
+string TimeStamp = system.Date("%Y-%m-%d %H:%M:%S").ToString();
+MailText                =  " The main house door was openend.\r\n";
+MailText  = MailText    #  TimeStamp # "\r\n";
+
+string stdout;
+string stderr;
+string teilstr;
+
+string sendmail    = "";
+string sendbetreff = "";
+string mailto      = "";
+
+
+string recipient;
+foreach(recipient, MailEmpfaenger.Split(",")) {
+  Write("Send email to: " # recipient # " ...");
+  system.Exec ("/bin/sh /etc/config/addons/mh/email.sh " # "\"" # MailBetreff # "\" \"" # MailText # "\" " # recipient, &stdout, &stderr);
+  WriteLine("done.");
+}
+
+WriteLine("OK");
