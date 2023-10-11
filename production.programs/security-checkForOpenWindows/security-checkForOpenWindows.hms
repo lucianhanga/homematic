@@ -1,0 +1,306 @@
+! 
+! *********************************
+! * 
+! * Open Windows Control Program
+! *  v1.1.0004  release date [ 2018.11.14 23:00 ]
+! *  
+! *  Description:  
+! *  Program for checking the status of the opened windows around 
+! *  the house. Gather all the mp3 associated with the opened windows
+! *  and play them at the end.
+! *  The program offers the following functionality:
+! *  - Check for opened windows and gather windows IDs associated with
+! *  the gong mp3s into a list.
+! *  - Enable/Disable the House levels by setting true/false the:
+! *  enable_level_XXXXXX variables.
+! *
+! *  
+! *  Author:
+! *  Lucian Hanga  
+! *  
+! *  
+! *  
+! *  Release Notes:
+! *  v1.1.0004 [ 2018.11.14 23:00 ]
+! *  - new voices
+! *  - add support for the kipped windows
+! *  - check and notify if the sensors are offline
+! *
+! *  v1.0.0 [ 2014.04.07 22:00 ]
+! *  - First Draft of the programm
+! *  
+! * 
+! *  StillToBeDone:
+! *  - add the sensors from the UG; they are still the old ones
+! *  
+! *  
+! *********************************
+! 
+
+boolean enable_UG_  = false;
+boolean enable_EG_  = true;
+boolean enable_OG1_ = true;
+boolean enable_OG2_ = true;
+
+
+string s_ = "";
+string window_sensor_name_;
+string window_mp3_name_;
+
+! *****
+! 
+! check the UG for open windows
+! 
+if(enable_UG_ == true) {
+! 
+! Waschküche Fenster Sensor
+! 
+  string window_sensor_name_ = "Waschküche Fenster Sensor";
+  string window_mp3_name_    = ",111";
+  if( (dom.GetObject(window_sensor_name_))&&
+     ((dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1)||
+      (dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2)   )) { s_ = s_ + window_mp3_name_; };
+! 
+! Fitnessraum Fenster Sensor
+! 
+  string window_sensor_name_ = "Fitnessraum Fenster Sensor";
+  string window_mp3_name_    = ",116";
+  if( (dom.GetObject(window_sensor_name_))&&
+     ((dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1)||
+      (dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2)   )) { s_ = s_ + window_mp3_name_; };
+
+! 
+! Speisekammer Fenster Sensor
+! 
+  string window_sensor_name_ = "Speisekammer Fenster Sensor";
+  string window_mp3_name_    = ",121";
+  if( (dom.GetObject(window_sensor_name_))&&
+     ((dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1)||
+      (dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2)   )) { s_ = s_ + window_mp3_name_; };
+! 
+! Keller Fenster Sensor
+! 
+  string window_sensor_name_ = "Keller Fenster Sensor";
+  string window_mp3_name_    = ",126";
+  if( (dom.GetObject(window_sensor_name_))&&
+     ((dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1)||
+      (dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2)   )) { s_ = s_ + window_mp3_name_; };
+
+}
+
+! *****
+! 
+! check the EG for open windows
+!
+if(enable_EG_ == true) {
+! 
+! Küche Fenster Sensor
+! 
+  string window_sensor_name_ = "Küche Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",011";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",012";  } }
+  } else {                                                                s_ = s_ + ",013"; }
+! 
+! Gäste WC Sensor
+! 
+  string window_sensor_name_ = "Gäste WC Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",027";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",028";  } }
+  } else {                                                                s_ = s_ + ",029"; }
+! 
+! Wohnzimmer Fenster 1 Sensor
+! 
+  string window_sensor_name_ = "Wohnzimmer Fenster 1 Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",041";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",042";  } }
+  } else {                                                                s_ = s_ + ",043"; }
+!! 
+!! Wohnzimmer Fenster 2 Sensor
+!! 
+!  string window_sensor_name_ = "Wohnzimmer Fenster 2 Sensor";
+!  if( dom.GetObject(window_sensor_name_) ) {
+!  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",044";  } else { 
+!  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",045";  } }
+!  } else {                                                                s_ = s_ + ",046"; }
+! 
+! Wohnzimmer Fenster 3 Sensor
+! 
+  string window_sensor_name_ = "Wohnzimmer Fenster 3 Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",047";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",048";  } }
+  } else {                                                                s_ = s_ + ",049"; }
+}
+
+! *****
+! 
+! check the OG1 for open windows
+!
+! 
+if(enable_OG1_ == true) {
+! 
+! Schlafzimmer Fenster Sensor
+! 
+  string window_sensor_name_ = "Schlafzimmer Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",066";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",067";  } }
+  } else {                                                                s_ = s_ + ",068"; }
+
+! 
+! Bad Schlafzimmer Fenster Sensor
+! 
+  string window_sensor_name_ = "Bad Schlafzimmer Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",081";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",082";  } }
+  } else {                                                                s_ = s_ + ",083"; }
+
+! 
+! Bad OG1 Fenster Sensor
+! 
+  string window_sensor_name_ = "Bad OG1 Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",096";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",097";  } }
+  } else {                                                                s_ = s_ + ",098"; }
+
+! 
+! Gästezimmer Fenster Sensor
+! 
+  string window_sensor_name_ = "Gästezimmer Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",126";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",127";  } }
+  } else {                                                                s_ = s_ + ",128"; }
+
+! 
+! Kinderzimmer Fenster Sensor
+! 
+  string window_sensor_name_ = "Kinderzimmer Fenster Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",111";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",112";  } }
+  } else {                                                                s_ = s_ + ",113"; }
+
+}
+
+! *****
+! 
+! check the OG2 for open windows
+!
+! 
+if(enable_OG2_ == true) {
+! 
+! Schlafzimmer OG2 Fenster 1 Sensor
+! 
+  string window_sensor_name_ = "Schlafzimmer OG2 Fenster 1 Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",141";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",142";  } }
+  } else {                                                                s_ = s_ + ",143"; }
+
+! 
+! Wohnzimmer OG2 Fenster 1 Sensor
+! 
+  string window_sensor_name_ = "Wohnzimmer OG2 Fenster 1 Sensor";
+  string window_sensor_name_ = "Schlafzimmer OG2 Fenster 1 Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",144";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",145";  } }
+  } else {                                                                s_ = s_ + ",146"; }
+
+!
+! Wohnzimmer OG2 Fenster 3 Sensor
+! 
+  string window_sensor_name_ = "Wohnzimmer OG2 Fenster 3 Sensor";
+  string window_sensor_name_ = "Schlafzimmer OG2 Fenster 1 Sensor";
+  if( dom.GetObject(window_sensor_name_) ) {
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==2) {  s_ = s_ + ",161";  } else { 
+  if(dom.GetObject(window_sensor_name_).DPByHssDP("STATE").Value()==1) {  s_ = s_ + ",162";  } }
+  } else {                                                                s_ = s_ + ",163"; }
+}
+
+if(s_=="") {
+ s_=",003";
+};
+! "volume, repeat, aaaaa,  XXXyyyyyy.mp3" XXX - are digits
+!s_ = "1,1,108000" + s_;
+WriteLine(s_);
+
+
+! 
+! *********************************
+! * 
+! *  Aussentemperatur Speach Program
+! *  v2.0.0001  release date [ 2018.11.18 22:00 ]
+! *  
+! *  Description:  
+! *  Reads the temperature from the Außentemperatur Sensor and
+! *  plays it on the "Sirene Audio".
+! *  
+! *  Author:
+! *  Lucian Hanga  
+! *  
+! *  Release Notes:
+! *  v1.1.0001 [ 2018.11.18 22:00 ]
+! *  - Replace the full mp3 texts with multiple mp3s which compose the 
+! *    temperature value
+! *  
+! *  v1.0 [ 2018.11.11 22:00 ]
+! *  - First Draft of the programm
+! *  
+! *  StillToBeDone:
+! *  - nothing scheduled yet
+! *  
+! *********************************
+! 
+
+! string s_ = "";
+s_ = s_ + ",004";
+
+string aussentemperatur_sensor_name_ = "Außentemperatur Sensor";
+WriteLine(aussentemperatur_sensor_name_);
+integer temp_ = dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value(); 
+WriteLine(dom.GetObject(aussentemperatur_sensor_name_).DPByHssDP("TEMPERATURE").Value());
+! check if the number is negative and add the appropriate text
+if (temp_<0) {
+     WriteLine("negative temperature detected.")
+     s_ = s_ + ",229";
+}
+! get the absolute value of the temperature
+temp_ = temp_.Abs();
+! get the integer and the fractional part
+integer temp_integer_= temp_.ToInteger();
+integer temp_decimal_=((temp_*10)%10).ToInteger();
+WriteLine(temp_integer_);
+WriteLine(temp_decimal_);
+
+integer temp_hunderds_ = (temp_/100).ToInteger(); 
+integer temp_tens_     = ((temp_- temp_hunderds_*100 )/10).ToInteger();
+integer temp_units_    = (temp_%10).ToInteger();
+WriteLine("number hunderds: "  # temp_hunderds_);
+WriteLine("number tens:     "  # temp_tens_);
+WriteLine("number units:    "  # temp_units_);
+
+if(temp_hunderds_>0 ) { s_ = s_ + ",228"; }
+if(temp_tens_  == 1 ) { s_ = s_ + ",2"#temp_tens_.ToString()#temp_units_.ToString(); } 
+if(temp_tens_  >= 2 ) { s_ = s_ + ",20"#temp_units_.ToString(); }
+if(temp_tens_  == 0 ) { s_ = s_ + ",20"#temp_units_.ToString(); }
+if(temp_tens_  >= 2 ) { s_ = s_ + ",230"; }
+if(temp_tens_  == 2 ) { s_ = s_ + ",220"; }
+if(temp_tens_  == 3 ) { s_ = s_ + ",221"; }
+if(temp_tens_  == 4 ) { s_ = s_ + ",222"; }
+if(temp_tens_  == 5 ) { s_ = s_ + ",223"; }
+if(temp_tens_  == 6 ) { s_ = s_ + ",224"; }
+if(temp_tens_  == 7 ) { s_ = s_ + ",225"; }
+if(temp_tens_  == 8 ) { s_ = s_ + ",226"; }
+if(temp_tens_  == 9 ) { s_ = s_ + ",227"; }
+s_ = s_ + ",005";
+WriteLine ("s_=" # "\"" # s_ # "\"");
+dom.GetObject("Sirene Audio").DPByHssDP("SUBMIT").State("1,1,108000" # s_);
+dom.GetObject("Lautsprecher Sound").DPByHssDP("SUBMIT").State("1,1,108000" # s_);
+
