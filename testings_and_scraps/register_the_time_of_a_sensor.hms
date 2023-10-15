@@ -1,0 +1,33 @@
+! 
+! register the time when a sensor detected movement 
+! 
+
+! sensor name
+string gartenSensorName="Garten Bewegungsmelder Sensor";
+! get the sensor object
+object gartenSensor = dom.GetObject(gartenSensorName);
+! check if the gartenSensor exists
+if (!gartenSensor) {
+    WriteLine("[ERROR]    Sensor " # gartenSensorName # " not found");
+    return;
+} else {
+    WriteLine("[DEBUG]    Sensor " # gartenSensorName # " found"); 
+}
+
+! build the datapoint name
+string gartenSensorDPName = "HmIP-RF." # gartenSensor.Address() # ".MOTION";
+! get the datapoint object
+object gartenSensorDP = dom.GetObject(gartenSensorDPName);
+! check if the gartenSensorDP exists
+if (!gartenSensorDP) {
+    WriteLine("[ERROR]    Datapoint " # gartenSensorDPName # " not found");
+    return;
+} else {
+    WriteLine("[DEBUG]    Datapoint " # gartenSensorDPName # " found"); 
+}
+
+! get the current value of the datapoint
+string gartenSensorDPValue = gartenSensorDP.Value();
+! print the current value of the datapoint
+WriteLine("[DEBUG]    Datapoint " # gartenSensorDPName # " has value " # gartenSensorDPValue);
+

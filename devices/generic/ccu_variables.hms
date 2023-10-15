@@ -1,0 +1,26 @@
+! 
+! get and set variables defined in CCU
+! 
+! 
+
+! variable name
+string myVariableName= "myVariable";
+! get the variable
+var myVariable = dom.GetObject(myVariableName);
+! check if the variable exists
+if(!myVariable) {
+    WriteLine("[ERROR]  Variable " + myVariableName + " not found.");
+    return;
+} else {
+    WriteLine("[INFO]   Variable " + myVariableName + " found.");
+}
+
+! get the value of the variable
+var myVariableValue = myVariable.Value();
+! print the value of the number type variable
+WriteLine("[INFO]   Variable " + myVariableName + " has value " + myVariableValue);
+! print the value a integer type variable
+WriteLine("[INFO]   Variable " + myVariableName + " has value " + myVariableValue.ToInteger());
+! set the value of the variable
+myVariable.Variable(100000);
+
